@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HANDY CRAFT NETWORK</title>
+
+  <!-- main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase (compat) - keep if you plan to enable auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body class="theme-dark">
+
+  <!-- loader -->
+  <div id="loader" role="status" aria-hidden="false">
+    <div class="loader-inner" aria-hidden="true"></div>
+  </div>
+
+  <!-- background video (optional) -->
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="assets/background.mp4" type="video/mp4" />
+  </video>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="nav-link" href="#home">Home</a>
+    <a class="nav-link" href="#ranks">Ranks</a>
+    <a class="nav-link" href="#leaderboard-section">Leaderboard</a>
+    <a class="nav-link" href="#staff">Staff</a>
+    <a class="nav-link" href="#event">Event</a>
+
+    <!-- top-right: login only -->
+    <div class="auth-area">
+      <button id="open-auth" class="btn primary">Login / Register</button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <section id="home" class="section home-wrap">
+    <div class="container">
+      <img src="assets/logo.png" alt="HANDY CRAFT NETWORK" class="brand-logo" />
+
+      <div class="home-card card">
+        <div class="home-top">
+          <div class="home-left">
+            <div id="ip-box" class="ip-box">play.handycraftnetwork.fun</div>
+          </div>
+
+          <div class="home-actions">
+            <button id="copy-ip" class="btn blue-glow">Copy IP</button>
+
+            <!-- Social card (exact structure + CSS inspired by your snippet) -->
+            <div class="social-card" title="Social">
+              <span>Social</span>
+              <a class="social-link" href="https://youtube.com" target="_blank" rel="noopener">
+                <!-- youtube icon -->
+                <svg viewBox="0 0 461.001 461.001" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z"/></svg>
+              </a>
+              <a class="social-link" href="https://facebook.com" target="_blank" rel="noopener">
+                <!-- facebook icon -->
+                <svg viewBox="0 0 512 512" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"/></svg>
+              </a>
+              <a class="social-link" href="https://discord.gg" target="_blank" rel="noopener">
+                <!-- discord icon -->
+                <svg viewBox="0 -28.5 256 256" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p class="muted">Join our server, vote & enjoy perks. (Discord, YouTube, FB links)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOTE AREA (separate page section) -->
+  <section id="vote" class="section container">
+    <h2 class="title">Vote for Rewards</h2>
+    <div class="vote-grid">
+      <div class="vote-card card">
+        <div class="vote-title">Vote Link 1</div>
+        <button class="btn blue-glow" onclick="window.open('https://topminecraftservers.org/vote/40506','_blank')">Vote Now</button>
+      </div>
+      <div class="vote-card card">
+        <div class="vote-title">Vote Link 2</div>
+        <button class="btn blue-glow" onclick="window.open('https://topg.org/minecraft-servers/server-673141','_blank')">Vote Now</button>
+      </div>
+      <div class="vote-card card">
+        <div class="vote-title">Vote Link 3</div>
+        <button class="btn blue-glow" onclick="window.open('https://minecraft-server-list.com/server/512429/','_blank')">Vote Now</button>
+      </div>
+      <div class="vote-card card">
+        <div class="vote-title">Vote Link 4</div>
+        <button class="btn blue-glow" onclick="window.open('https://best-minecraft-servers.co/server-handycraftnetwork.29263/vote','_blank')">Vote Now</button>
+      </div>
+      <div class="vote-card card">
+        <div class="vote-title">Vote Link 5</div>
+        <button class="btn blue-glow" onclick="window.open('https://minecraft-mp.com/server-s344574','_blank')">Vote Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RANKS -->
+  <section id="ranks" class="section container">
+    <h2 class="title">Ranks & Coin Shop</h2>
+
+    <div class="rank-toggle card">
+      <button class="btn btn-tab active" data-duration="3month">3 Month</button>
+      <button class="btn btn-tab" data-duration="permanent">Permanent</button>
+    </div>
+
+    <div id="rank-grid" class="rank-grid"></div>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section id="leaderboard-section" class="section container">
+    <h2 class="title">Ranking</h2>
+    <div class="ranking-wrap card">
+      <div class="ranking-header">
+        <button class="btn-chip active" data-mode="overall">Overall</button>
+        <button class="btn-chip" data-mode="weekly">Weekly</button>
+        <button class="btn-chip" data-mode="monthly">Monthly</button>
+      </div>
+      <div id="leaderboard" class="leaderboard"></div>
+    </div>
+  </section>
+
+  <!-- STAFF -->
+  <section id="staff" class="section container">
+    <h2 class="title">Admin / Staff Info</h2>
+    <div id="admin-grid" class="admin-grid"></div>
+  </section>
+
+  <!-- EVENT -->
+  <section id="event" class="section container">
+    <h2 class="title">Server Events</h2>
+    <div class="card"><p id="event-timer" class="timer"></p></div>
+  </section>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal" aria-hidden="true">
+    <div class="modal-content card" role="dialog" aria-label="Authentication">
+      <button class="close" aria-label="Close modal">&times;</button>
+
+      <form id="auth-form" class="form" autocomplete="off">
+        <input id="ign" class="input-field" placeholder="In-Game Name (IGN)" />
+        <input id="email" class="input-field" placeholder="Email" type="email" />
+        <input id="password" class="input-field" placeholder="Password" type="password" />
+        <div class="form-actions">
+          <button id="register-btn" type="button" class="button button-primary">Register</button>
+          <button id="login-btn" type="button" class="button button-secondary">Login</button>
+        </div>
+        <button id="google-btn" type="button" class="button button-secondary">Continue with Google</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile panel (appears after login) -->
+  <div id="profile-panel" class="profile-panel" aria-hidden="true">
+    <div class="profile-card card">
+      <img id="profile-avatar" class="profile-avatar" src="assets/myskin.png" alt="Profile avatar" />
+      <div id="profile-name" class="profile-name">Guest</div>
+      <div id="profile-credits" class="profile-credits">Credits: 0</div>
+      <div style="margin-top:12px">
+        <button id="logout-btn" class="btn">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- main script -->
+  <script src="script.js"></script>
+</body>
+</html>
