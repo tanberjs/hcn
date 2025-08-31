@@ -1,0 +1,156 @@
+/* ---------- Base & layout ---------- */
+:root{
+  --bg:#05060a;
+  --card: rgba(255,255,255,0.03);
+  --card-2: rgba(255,255,255,0.06);
+  --text:#eaf6ff;
+  --muted:#9aa0a6;
+  --accent:#0a8cff;   /* blue accent */
+  --accent-2:#8fd7ff;
+  --border: rgba(10,140,255,0.18);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+.container-narrow{width:92%;max-width:1150px;margin:0 auto;}
+.section{padding:92px 0;}
+
+/* ---------- Loader ---------- */
+.page-loader{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.55));z-index:9999;
+}
+.loader{
+  width:48px;height:48px;background:#0f1720;display:block;position:relative;box-sizing:border-box;animation:rotationBack 1s ease-in-out infinite reverse;border-radius:8px;
+}
+.loader::before{content:'';position:absolute;left:0;top:0;transform:rotate(45deg);width:48px;height:48px;background:#0a0f14;border-radius:8px;box-shadow:0 0 8px rgba(0,0,0,0.2)}
+.loader::after{content:'';position:absolute;width:32px;height:32px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);background:#000}
+@keyframes rotationBack{0%{transform:rotate(0)}100%{transform:rotate(-360deg)}}
+
+/* ---------- Navbar ---------- */
+.navbar-wrap{position:sticky;top:0;z-index:200;background:linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.2));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.02)}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.nav-left .nav-brand{font-weight:900;letter-spacing:1px;color:var(--accent);text-decoration:none;font-size:16px}
+.nav-center{display:flex;gap:18px;align-items:center}
+.nav-center a{color:var(--muted);text-decoration:none;font-weight:700;opacity:0.95}
+.nav-center a:hover{color:var(--accent)}
+.nav-right{display:flex;gap:12px;align-items:center}
+
+/* ---------- Buttons (global glowing style) ---------- */
+.btn, .button {
+  padding:10px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);
+  background:transparent;color:var(--text);cursor:pointer;font-weight:700;letter-spacing:0.2px;
+  transition: all .28s ease;
+  box-shadow: 0 0 0 rgba(10,140,255,0);
+  position:relative; overflow:hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+/* 'login' button style used everywhere */
+.btn-primary, .button.primary {
+  background: linear-gradient(180deg,var(--accent), var(--accent-2));
+  color:#001017;border:none;
+  box-shadow: 0 8px 30px rgba(10,140,255,0.15), 0 0 0 0 rgba(10,140,255,0);
+}
+.btn-glow{box-shadow: 0 8px 36px rgba(10,140,255,0.18)}
+.btn:hover, .button:hover{ transform: translateY(-3px); box-shadow: 0 16px 60px rgba(10,140,255,0.2); color: #fff;}
+
+/* subtle ghost / secondary */
+.btn.secondary, .button.secondary { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); color:var(--text)}
+.button.google{background:#2b6fb2;color:#fff;border:none}
+
+/* small variant */
+.small{padding:6px 10px;border-radius:8px;font-size:13px}
+
+/* custom hover effect like the user asked (intense glow) */
+.btn-glow:after{
+  content:'';position:absolute;left:-30%;top:-50%;width:160%;height:200%;background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.12), transparent 20%);opacity:0;transition:opacity .25s;
+}
+.btn-glow:hover:after{opacity:1}
+
+/* ---------- Home ---------- */
+.section-home{min-height:72vh;display:flex;align-items:center;justify-content:center}
+.home-inner{display:flex;flex-direction:column;gap:22px;align-items:center;text-align:center}
+.brand-logo{width:460px;max-width:78vw;animation:logo-bounce 2600ms ease-in-out infinite;filter:drop-shadow(0 8px 40px rgba(0,0,0,0.6));}
+@keyframes logo-bounce{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+
+/* card in home */
+.home-card{display:flex;gap:18px;align-items:center;padding:18px 22px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--border)}
+.home-info{display:flex;align-items:center;gap:18px}
+.ip-box{font-weight:900;font-size:20px;color:var(--accent);letter-spacing:0.6px}
+.home-actions{display:flex;gap:12px;align-items:center}
+
+/* ---------- Social card from user (exact style) ---------- */
+.card-social{position:relative;display:flex;align-items:center;justify-content:center;background:#e7e7e7;width:200px;height:50px;padding:0;border-radius:10px;overflow:hidden}
+.card-social span{position:absolute;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-family:monospace;font-size:18px}
+.card-social::before, .card-social::after{position:absolute;content:"";width:50%;height:100%;z-index:1;transition:0.25s}
+.card-social::before{left:0;background-color:#4d60b6}
+.card-social::after{right:0;background-color:#4453a6}
+.card-social:hover{box-shadow:0 14px 28px rgba(0,0,0,0.25)}
+.card-social .social-link{position:relative;display:flex;align-items:center;justify-content:center;width:25%;height:100%;opacity:0;transition:0.25s;z-index:2}
+.card-social:hover .social-link{opacity:1}
+.card-social .social-link svg{height:22px;fill:white;transform:scale(1);transition:transform .25s}
+.card-social .social-link:hover{transform:scale(1.12)}
+.card-social:hover span{opacity:0}
+
+/* ---------- Ranks (flip stable) ---------- */
+.rank-toggle{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.rank-card{perspective:1200px;height:220px}
+.rank-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s ease}
+.rank-card:hover .rank-inner{transform:rotateY(180deg)}
+.rank-face{position:absolute;inset:0;border-radius:12px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.rank-back{transform:rotateY(180deg);background:var(--card-2)}
+.rank-title{font-size:20px;font-weight:900}
+.rank-price{font-size:16px;margin:6px 0}
+.rank-ability{color:var(--accent-2);text-align:center}
+
+/* handle inner button hover not pushing card */
+.rank-face .btn{transform:none;box-shadow:none}
+
+/* ---------- Leaderboard ---------- */
+.ranking-header{display:flex;gap:10px;margin-bottom:12px}
+.leaderboard-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;overflow:auto}
+.table{width:100%;border-collapse:collapse}
+.table th, .table td{padding:9px;text-align:center}
+.table th{background:var(--card-2)}
+
+/* ---------- Staff ---------- */
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+.admin-card{padding:16px;border-radius:12px;background:var(--card);text-align:center;border:1px solid var(--border);min-height:230px}
+.admin-photo{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid var(--border);margin:0 auto 10px;display:block}
+.admin-name{font-weight:900}
+.admin-role{color:var(--accent-2);margin-bottom:8px}
+.admin-meta{color:var(--muted)}
+
+/* ---------- Event ---------- */
+.timer{font-weight:800;color:var(--accent);text-align:center}
+
+/* ---------- Modal / Auth ---------- */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999}
+.modal[aria-hidden="false"]{display:flex}
+.modal-content{width:min(440px,92vw);padding:18px;border-radius:12px}
+.modal-close{position:absolute;right:18px;top:12px;background:transparent;border:none;color:var(--text);font-size:20px;cursor:pointer}
+.form{display:flex;flex-direction:column;gap:10px}
+.field{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:rgba(255,255,255,0.02)}
+.input-icon{width:18px;height:18px;fill:var(--muted)}
+.input-field{background:none;border:none;outline:none;color:var(--text);flex:1}
+.btn-row{display:flex;gap:8px}
+
+/* ---------- Profile panel ---------- */
+.profile-panel{position:fixed;right:18px;bottom:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:800}
+.profile-panel.hidden{display:none}
+.profile-avatar{width:84px;height:84px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+.profile-name{font-weight:800}
+.profile-credits{color:var(--accent-2);font-weight:700}
+
+/* ---------- utilities ---------- */
+.title{font-size:26px;margin-bottom:12px}
+.card{border-radius:12px}
+.hr{height:1px;background:rgba(255,255,255,0.03);margin:10px 0}
+
+/* responsive */
+@media (max-width:860px){
+  .nav-center{display:none}
+  .brand-logo{width:320px}
+  .home-card{flex-direction:column;gap:12px}
+  .rank-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+}
