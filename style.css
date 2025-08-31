@@ -1,348 +1,177 @@
-/* ========= Robust front-end logic for HCN ======== */
+/* =========================
+   HCN - Redesigned CSS
+   Replaces previous style.css
+   Focus: readable dark theme, strong blue buttons, hover/icon behavior,
+   loader fixes, centered animated logo, responsive layout
+   ========================= */
 
-/* ---------- Loader init (robust, with fallback) ---------- */
-(function initLoader(){
-  const loader = document.getElementById('loader');
-  if(!loader) return;
-  loader.classList.remove('loader--hidden');
-  let hidden=false;
-  const FORCED_HIDE_MS = 6000;
-  const tidy = () => {
-    if(hidden) return;
-    hidden=true;
-    loader.classList.add('loader--hidden');
-    loader.setAttribute('aria-hidden','true');
-    setTimeout(()=>{ try{ loader.remove(); }catch(e){} }, 750);
-  };
-  if(document.readyState === 'complete'){ tidy(); return; }
-  window.addEventListener('load', ()=> tidy(), {once:true});
-  setTimeout(()=> tidy(), FORCED_HIDE_MS);
-  // fail-safe: ESC hides loader for dev
-  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') tidy(); }, { once:true });
-})();
-
-/* ---------- Helper: $(id) ---------- */
-const $ = id => document.getElementById(id);
-
-/* ---------- Copy IP ---------- */
-document.addEventListener('click', (e)=>{
-  if(e.target && (e.target.id === 'copy-ip' || e.target.closest('#copy-ip'))){
-    const ip = $('ip-box').textContent.trim();
-    navigator.clipboard?.writeText(ip).then(()=> alert('IP copied: ' + ip)).catch(()=> alert('Copy failed. IP: ' + ip));
-  }
-});
-
-/* ---------- Modal open/close ---------- */
-const authModal = $('auth-modal');
-const openAuthBtn = $('open-auth');
-const closeAuthBtn = $('close-auth') || document.querySelector('.close');
-openAuthBtn?.addEventListener('click', (ev)=>{
-  ev.preventDefault();
-  authModal.setAttribute('aria-hidden','false');
-});
-closeAuthBtn?.addEventListener('click', ()=> authModal.setAttribute('aria-hidden','true'));
-window.addEventListener('click', (e)=> { if(e.target === authModal) authModal.setAttribute('aria-hidden','true'); });
-
-/* ---------- Profile area toggling ---------- */
-const authArea = $('auth-area');
-const profilePanel = $('profile-panel');
-function showProfilePanel(show){
-  if(show){
-    profilePanel.classList.add('active');
-  } else {
-    profilePanel.classList.remove('active');
-  }
+/* --------- Root variables --------- */
+:root{
+  --bg:#05060a;            /* page background */
+  --panel: rgba(255,255,255,0.03);
+  --panel-2: rgba(255,255,255,0.04);
+  --muted: #9aa0a6;
+  --text: #e9f3ff;
+  --accent: #2e9cff;
+  --accent-strong: #1f7fd9;
+  --glass-border: rgba(255,255,255,0.06);
+  --card-radius: 14px;
+  --card-pad: 14px;
+  --focus: rgba(46,156,255,0.18);
+  --shadow: 0 12px 32px rgba(2,6,23,0.6);
+  --max-width: 1200px;
+  --ease: cubic-bezier(.2,.9,.25,1);
 }
 
-/* ---------- Firebase init (REPLACE with your config) ---------- */
-/* IMPORTANT: Replace the fields below with your firebase config values */
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+/* --------- Reset / base --------- */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
 
-/* ---------- Auth / registration logic ---------- */
-const registerBtn = $('register-btn');
-const loginBtn = $('login-btn');
-const googleBtn = $('google-btn');
+/* --------- Loader (robust & unobtrusive) --------- */
+#loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(0deg, rgba(2,6,23,0.6), rgba(2,6,23,0.25));z-index:99999;transition:opacity .45s ease,visibility .45s;pointer-events:auto}
+#loader.loader--hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.06));box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;animation:loader-rotate 1s linear infinite reverse}
+@keyframes loader-rotate{0%{transform:rotate(0)}100%{transform:rotate(-360deg)}}
 
-async function createUserDoc(uid, ign){
-  try{
-    await db.collection('users').doc(uid).set({
-      ign: ign || '',
-      credits: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-  }catch(err){
-    console.error('createUserDoc error', err);
-  }
+/* small sr-only helper */
+.sr-only{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* --------- Background video --------- */
+#bg-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:brightness(.28) saturate(.95);pointer-events:none}
+
+/* --------- Navbar --------- */
+.navbar{position:sticky;top:0;z-index:1100;display:flex;gap:20px;align-items:center;justify-content:center;padding:12px 18px;backdrop-filter:blur(8px);background:linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.2));border-bottom:1px solid var(--glass-border)}
+.navbar .nav-link{color:var(--text);font-weight:700;padding:8px 12px;border-radius:10px;transition:all .18s var(--ease)}
+.navbar .nav-link:hover{background:rgba(255,255,255,0.02);color:var(--accent)}
+.auth-area{position:absolute;right:18px;top:10px}
+
+/* --------- Layout helpers --------- */
+.section{padding:120px 18px;scroll-margin-top:96px}
+.container{max-width:var(--max-width);width:92%;margin:0 auto}
+.title{font-size:28px;margin:0 0 12px}
+
+/* --------- Cards --------- */
+.card{background:var(--panel);border:1px solid var(--glass-border);border-radius:var(--card-radius);padding:var(--card-pad);box-shadow:0 6px 22px rgba(0,0,0,0.4)}
+.card.ghost{background:transparent;border:none;box-shadow:none}
+
+/* --------- Buttons (unified styling) --------- */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;border-radius:10px;padding:10px 14px;font-weight:800;border:1px solid rgba(255,255,255,0.06);
+  background:transparent;color:var(--text);transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .18s var(--ease);
+}
+.btn:active{transform:translateY(0)}
+.btn:focus{outline:2px solid var(--focus);outline-offset:4px;border-color:rgba(46,156,255,0.22)}
+
+/* Blue primary / glowing variant (used everywhere) */
+.blue-glow{
+  background:linear-gradient(90deg, rgba(46,156,255,0.14), rgba(46,156,255,0.06));
+  color:#fff;border:1px solid rgba(46,156,255,0.28);
+  box-shadow:0 8px 28px rgba(46,156,255,0.06);
+}
+.blue-glow:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(46,156,255,0.18), 0 6px 24px rgba(0,0,0,0.5)}
+.btn.primary{background:var(--accent);color:#021425;border:none}
+.btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+/* uniform text button style you wanted (blue focus, glow on hover) */
+button{font-family:inherit}
+
+/* Make icon-only links accessible size */
+.icon-btn{width:44px;height:44px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center}
+
+/* --------- Home / Logo area --------- */
+.home-wrap{min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding-top:40px}
+.brand-logo{width:min(540px,78vw);height:auto;filter:drop-shadow(0 36px 56px rgba(0,0,0,0.6));animation:logo-float 6s ease-in-out infinite}
+@keyframes logo-float{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.01)}100%{transform:translateY(0) scale(1)}}
+
+/* center & style the home card */
+.home-card{width:min(980px,96%);display:flex;flex-direction:column;gap:16px;align-items:center;padding:20px;border-radius:18px}
+.home-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ip-box{font-weight:900;font-size:18px;letter-spacing:0.4px;cursor:pointer;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02)}
+
+/* container for copy & social */
+.home-actions{display:flex;align-items:center;gap:12px}
+
+/* --------- Social card (must match your provided layout) --------- */
+.social-card{
+  position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#4453a6,#4d60b6);color:#fff;
+  box-shadow:0 8px 30px rgba(0,0,0,0.45);overflow:hidden;height:50px;width:220px;border-radius:12px;
+}
+.social-card span{position:absolute;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:'Fira Mono',monospace;font-size:18px;font-weight:800;z-index:2;color:#fff;transition:opacity .25s}
+.social-card .social-link{
+  position:relative;display:flex;align-items:center;justify-content:center;width:25%;height:100%;text-decoration:none;color:#fff;
+  transition:all .22s ease;opacity:0;transform:translateY(8px);
+}
+.social-card .social-link svg{width:22px;height:22px}
+.social-card:hover .social-link{opacity:1;transform:translateY(0)}
+.social-card:hover span{opacity:0}
+
+/* If you want icons hidden until hover (as requested) we already set opacity 0; they appear on :hover */
+
+/* --------- Ranks grid (flip cards) --------- */
+.rank-toggle{display:flex;gap:12px;justify-content:center;margin-bottom:18px}
+.rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;align-items:start}
+.rank-card{perspective:1000px;height:220px}
+.rank-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .62s var(--ease)}
+.rank-card:hover .rank-inner{transform:rotateY(180deg)}
+.rank-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px solid var(--glass-border);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+.rank-back{transform:rotateY(180deg);background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02))}
+.rank-title{font-size:20px;font-weight:900}
+.rank-price{font-weight:800;color:var(--accent)}
+
+/* prevent in-card buttons from nudging */
+.rank-face .btn{transform:none;box-shadow:none}
+
+/* --------- Leaderboard table --------- */
+.ranking-wrap{padding:0}
+.ranking-header{display:flex;gap:8px;margin-bottom:12px}
+.leaderboard{overflow-x:auto;border-radius:12px;border:1px solid var(--glass-border);background:var(--panel-2);padding:10px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:10px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text)}
+.pos{font-weight:900;color:var(--accent)}
+
+/* --------- Staff cards --------- */
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:12px}
+.admin-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;border-radius:12px;min-height:220px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--glass-border)}
+.admin-photo{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid var(--glass-border);background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+
+/* --------- Event timer --------- */
+.timer{font-weight:900;color:var(--accent);text-align:center}
+
+/* --------- Modal / Auth form --------- */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1500;background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4))}
+.modal[aria-hidden="false"]{display:flex}
+.modal-content{width:min(460px,94vw);position:relative;border-radius:12px;padding:18px}
+.close{position:absolute;right:10px;top:6px;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer}
+.form{display:flex;flex-direction:column;gap:10px}
+.field{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.02)}
+.input-icon{width:18px;height:18px;fill:rgba(255,255,255,0.75)}
+.input-field{background:none;border:none;color:var(--text);width:100%;outline:none;font-size:14px}
+
+/* form action buttons */
+.form-actions{display:flex;gap:8px;justify-content:center}
+.button{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+.button-primary{background:var(--accent);color:#021425}
+.button-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+
+/* --------- Profile panel --------- */
+.profile-panel{position:fixed;right:18px;top:64px;z-index:1400;display:none}
+.profile-panel.active{display:block}
+.profile-card{width:260px;padding:14px;border-radius:12px;text-align:center}
+.profile-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin:0 auto;border:2px solid var(--glass-border)}
+.profile-name{font-weight:900}
+.profile-credits{color:var(--muted);margin-top:8px}
+
+/* --------- small screens --------- */
+@media (max-width:760px){
+  .navbar{padding:8px}
+  .auth-area{position:static;margin-left:auto}
+  .home-top{flex-direction:column;align-items:center}
+  .brand-logo{width:min(360px,86vw)}
+  .social-card{width:200px}
+  .profile-panel{right:8px;top:72px}
 }
 
-registerBtn?.addEventListener('click', async ()=>{
-  const email = $('auth-email').value.trim();
-  const password = $('auth-password').value;
-  const ign = $('auth-ign').value.trim();
-  if(!email || !password || !ign){ alert('Fill all fields'); return; }
-  try{
-    const res = await auth.createUserWithEmailAndPassword(email, password);
-    await createUserDoc(res.user.uid, ign);
-    alert('Registered! Welcome ' + ign);
-    authModal.setAttribute('aria-hidden','true');
-  }catch(err){ alert(err.message || 'Register failed'); }
-});
-
-loginBtn?.addEventListener('click', async ()=>{
-  const email = $('auth-email').value.trim();
-  const password = $('auth-password').value;
-  if(!email || !password){ alert('Fill email & password'); return; }
-  try{
-    await auth.signInWithEmailAndPassword(email, password);
-    alert('Login successful');
-    authModal.setAttribute('aria-hidden','true');
-  }catch(err){ alert(err.message || 'Login failed'); }
-});
-
-googleBtn?.addEventListener('click', async ()=>{
-  try{
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const res = await auth.signInWithPopup(provider);
-    // ensure user doc exists
-    const user = res.user;
-    await createUserDoc(user.uid, user.displayName || '');
-    alert('Logged in with Google');
-    authModal.setAttribute('aria-hidden','true');
-  }catch(err){ alert(err.message || 'Google login failed'); }
-});
-
-/* ---------- Auth state observer: update UI ---------- */
-const authAreaEl = $('auth-area');
-const profileAvatar = $('profile-avatar');
-const profileName = $('profile-name');
-const profileIgn = $('profile-ign');
-const profileUid = $('profile-uid');
-const profileCredits = $('profile-credits');
-
-function renderAuthUI(user, profileData){
-  if(user){
-    // show avatar & dropdown
-    authAreaEl.innerHTML = `
-      <button id="profile-btn" class="btn blue-glow">
-        <img src="${profileAvatar.src}" class="mini-avatar" alt="avatar" style="width:28px;height:28px;border-radius:8px;object-fit:cover;margin-right:8px"/>
-        ${profileData?.ign || (user.displayName || 'Player')}
-      </button>
-    `;
-    $('profile-btn')?.addEventListener('click', ()=> showProfilePanel(true));
-    // update profile panel content
-    profileAvatar.src = profileData?.avatar || 'assets/myskin.png';
-    profileName.textContent = profileData?.displayName || (profileData?.ign || (user.displayName || 'Player'));
-    profileIgn.textContent = 'IGN: ' + (profileData?.ign || '-');
-    profileUid.textContent = 'UID: ' + user.uid;
-    profileCredits.textContent = 'Credits: ' + (profileData?.credits ?? 0);
-    profilePanel.classList.add('active');
-  } else {
-    // show login button
-    authAreaEl.innerHTML = `<button id="open-auth" class="btn primary">Login / Register</button>`;
-    document.getElementById('open-auth')?.addEventListener('click', ()=> authModal.setAttribute('aria-hidden','false'));
-    profilePanel.classList.remove('active');
-  }
-}
-
-/* Logout and credit demo button */
-$('logout-btn')?.addEventListener && $('logout-btn').addEventListener('click', ()=> auth.signOut());
-
-$('add-credit')?.addEventListener && $('add-credit').addEventListener('click', async ()=>{
-  const user = auth.currentUser;
-  if(!user){ alert('Not logged in'); return; }
-  try{
-    const ref = db.collection('users').doc(user.uid);
-    await db.runTransaction(async tx=>{
-      const doc = await tx.get(ref);
-      const current = doc.exists ? (doc.data().credits || 0) : 0;
-      tx.set(ref, { credits: current + 50 }, { merge:true });
-    });
-    alert('Added 50 demo credits');
-  }catch(err){ console.error(err); alert('Failed to add credits') }
-});
-
-/* Listen to auth changes and fetch Firestore profile */
-auth.onAuthStateChanged(async user => {
-  if(!user){
-    renderAuthUI(null, null);
-    return;
-  }
-  const doc = await db.collection('users').doc(user.uid).get().catch(()=>null);
-  const profile = (doc && doc.exists) ? doc.data() : { ign: user.displayName || '', credits:0, avatar:'assets/myskin.png' };
-  // update profile area
-  renderAuthUI(user, profile);
-});
-
-/* attach logout handler (delegated, since the button is re-rendered) */
-document.body.addEventListener('click', (e)=>{
-  if(e.target && e.target.id === 'logout-btn') auth.signOut();
-});
-
-/* ---------- Ranks data & rendering (flip, stable height) ---------- */
-const RANKS = [
-  {name:"ELITE", ability:"Extra Kit Slot, /nick, /hat", price3:"৫৯৳", priceP:"১৪৯৳"},
-  {name:"HERO", ability:"Double Coins, /fly (lobby), /rename", price3:"১৪৯৳", priceP:"৩৪৯৳"},
-  {name:"TITAN", ability:"Special Commands, /enderchest, kits+", price3:"২৪৯৳", priceP:"৫৯৯৳"},
-  {name:"LEGEND", ability:"VIP Lobby, /anvil, /workbench, trails", price3:"৩৯৯৳", priceP:"৮৯৯৳"},
-  {name:"PHANTOM", ability:"All Perks, priority queue, /disguise", price3:"৫৯৯৳", priceP:"১৯৯৯৳"}
-];
-const rankGridEl = document.getElementById('rank-grid');
-
-function makeRankCard(item, priceText){
-  const wrap = document.createElement('div');
-  wrap.className = 'rank-card card';
-  wrap.innerHTML = `
-    <div class="rank-inner">
-      <div class="rank-face rank-front">
-        <div class="rank-title">${item.name}</div>
-        <div class="rank-price">${priceText}</div>
-        <div class="rank-ability">Hover to flip for perks</div>
-      </div>
-      <div class="rank-face rank-back">
-        <div class="rank-title">${item.name}</div>
-        <div class="rank-ability">${item.ability}</div>
-        <div class="rank-actions">
-          <button class="btn blue-glow buy-btn">Buy Now</button>
-          <button class="btn outline addcart">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-  `;
-  // demo buy action
-  wrap.querySelector('.buy-btn')?.addEventListener('click', ()=> alert(`Buy: ${item.name} — demo (implement payment)`));
-  return wrap;
-}
-
-function renderRanks(duration='3month'){
-  rankGridEl.innerHTML = '';
-  RANKS.forEach(r=>{
-    const price = (duration === 'permanent') ? r.priceP : r.price3;
-    rankGridEl.appendChild(makeRankCard(r, price));
-  });
-}
-
-document.querySelectorAll('.rank-toggle .btn').forEach(b=>{
-  b.addEventListener('click', (e)=>{
-    document.querySelectorAll('.rank-toggle .btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    renderRanks(b.dataset.duration);
-  });
-});
-renderRanks('3month');
-
-/* ---------- Leaderboard ---------- */
-const LB_DATA = {
-  overall:[
-    {pos:1,name:"PlayerOne",points:15230},
-    {pos:2,name:"PlayerTwo",points:14110},
-    {pos:3,name:"PlayerThree",points:13380},
-    {pos:4,name:"PlayerFour",points:12050},
-    {pos:5,name:"PlayerFive",points:11040}
-  ],
-  weekly:[
-    {pos:1,name:"PlayerThree",points:1980},
-    {pos:2,name:"PlayerTwo",points:1760},
-    {pos:3,name:"PlayerOne",points:1650},
-    {pos:4,name:"PlayerSix",points:1205},
-    {pos:5,name:"PlayerSeven",points:1110}
-  ],
-  monthly:[
-    {pos:1,name:"PlayerFour",points:5230},
-    {pos:2,name:"PlayerFive",points:4980},
-    {pos:3,name:"PlayerOne",points:4740},
-    {pos:4,name:"PlayerThree",points:4400},
-    {pos:5,name:"PlayerTwo",points:4200}
-  ]
-};
-
-const leaderboardEl = document.getElementById('leaderboard');
-function renderLeaderboard(mode='overall'){
-  const data = LB_DATA[mode] || [];
-  leaderboardEl.innerHTML = `
-    <table class="table">
-      <thead><tr><th>#</th><th>Player</th><th>Points</th></tr></thead>
-      <tbody>${data.map(r=>`<tr><td class="pos">#${r.pos}</td><td>${r.name}</td><td>${r.points}</td></tr>`).join('')}</tbody>
-    </table>
-  `;
-}
-renderLeaderboard('overall');
-document.querySelectorAll('.ranking-header .btn-chip').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.ranking-header .btn-chip').forEach(x=>x.classList.remove('active'));
-    btn.classList.add('active');
-    renderLeaderboard(btn.dataset.mode);
-  });
-});
-
-/* ---------- Staff rendering (keeps your data intact) ---------- */
-const STAFF = [
-  {name:"Tanber", role:"FOUNDER", ign:"notcooldamn2", discord:"tanber_369", photo:"skins/tanber.png"},
-  {name:"Sohrab", role:"CO FOUNDER", ign:"notcooldamn3", discord:"sohrab_369", photo:"skins/sohrab.png"},
-  {name:"Ahsan", role:"Partner", ign:"ryuzen", discord:"monkey._.d._.luffy2", photo:"skins/ahsan.png"},
-  {name:"Arfat", role:"Manager", ign:"onxy", discord:"onyx.plays", photo:"skins/arfat.png"},
-  {name:"Asraful", role:"Moderator", ign:"asraful_vai", discord:"asraful_vai", photo:"skins/asraful.png"},
-  {name:"Risat", role:"Senior Staff", ign:"risat", discord:"resath", photo:"skins/risat.png"},
-  {name:"Rasel", role:"Social Manager", ign:"CANDYB0T", discord:"candyb0t", photo:"skins/rasel.png"},
-  {name:"Siam", role:"Social Manager", ign:"siam", discord:"siam45795", photo:"skins/siam.png"},
-  {name:"Tanver", role:"Developer", ign:"tenzenx", discord:"tenzenx", photo:"skins/tanver.png"}
-];
-async function renderStaff(){
-  const grid = document.getElementById('admin-grid');
-  grid.innerHTML = '';
-  STAFF.forEach(s=>{
-    const card = document.createElement('div');
-    card.className = 'admin-card card';
-    card.innerHTML = `
-      <img class="admin-photo" src="${s.photo}" alt="${s.name}" onerror="this.src='skins/placeholder.png'"/>
-      <div class="admin-name">${s.name}</div>
-      <div class="admin-role">${s.role}</div>
-      <div class="admin-meta">IGN: ${s.ign}</div>
-      <div class="admin-meta">Discord: ${s.discord}</div>
-    `;
-    grid.appendChild(card);
-  });
-}
-renderStaff();
-
-/* ---------- Event countdown ---------- */
-const eventTimer = document.getElementById('event-timer');
-function tickCountdown(){
-  const now = new Date();
-  const target = new Date(now.getFullYear(), now.getMonth()+1, 1, 0, 0, 0);
-  const diff = target - now;
-  if(diff <= 0){ eventTimer.textContent = 'Event is live!'; return; }
-  const d = Math.floor(diff / (1000*60*60*24));
-  const h = Math.floor((diff / (1000*60*60)) % 24);
-  const m = Math.floor((diff / (1000*60)) % 60);
-  const s = Math.floor((diff / 1000) % 60);
-  eventTimer.textContent = `Next Event in ${d}d ${h}h ${m}m ${s}s`;
-}
-tickCountdown();
-setInterval(tickCountdown, 1000);
-
-/* ---------- Accessibility & small UX helpers ---------- */
-/* Prevent accidental nav anchor jump */
-document.querySelectorAll('.nav-link').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const id = a.getAttribute('href').slice(1); document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }));
-
-/* Close profile panel if click outside */
-document.addEventListener('click', (e)=>{
-  const btn = e.target.closest && e.target.closest('#profile-btn');
-  if(btn) return;
-  const inside = e.target.closest && (e.target.closest('.profile-card') || e.target.closest('#auth-modal'));
-  if(!inside) showProfilePanel(false);
-});
-
-/* mini styling for new profile button images */
-document.body.addEventListener('click', ()=>{ /* reserved for delegated events */ });
-
-/* END of script.js */
+/* --------- accessibility tweaks --------- */
+button, input, .social-link { -webkit-tap-highlight-color: transparent; }
