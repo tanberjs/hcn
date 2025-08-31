@@ -1,162 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HANDY CRAFT NETWORK</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Optional: Firebase (put these scripts if you will enable Firebase in script.js) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HCN — Home</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preload" href="assets/Tropical Island Handicraft Logo.png" as="image">
 </head>
-<body class="theme-blue">
+<body>
 
-  <!-- PAGE LOADER (will be removed automatically by script) -->
-  <div id="page-loader" class="page-loader">
-    <div class="loader"></div>
-  </div>
+  <!-- Loader -->
+  <div id="loader" class="loader"></div>
 
-  <!-- NAVBAR -->
-  <header class="navbar-wrap">
-    <nav class="navbar container-narrow">
-      <div class="nav-left">
-        <a href="#home" class="nav-brand">HANDY CRAFT</a>
+  <!-- Site Wrapper -->
+  <div id="app">
+
+    <!-- Header -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#" class="brand">
+          <img class="brand-logo" src="assets/Tropical Island Handicraft Logo.png" alt="HCN Logo" />
+          <span class="brand-name">HCN Network</span>
+        </a>
+
+        <nav class="nav">
+          <!-- Removed Discord from header as requested -->
+          <button class="btn-glow" id="loginOpenBtn" aria-controls="loginModal" aria-expanded="false">
+            Login
+          </button>
+        </nav>
       </div>
-      <div class="nav-center">
-        <a href="#home">Home</a>
-        <a href="#ranks">Ranks</a>
-        <a href="#leaderboard">Leaderboard</a>
-        <a href="#staff">Staff</a>
-        <a href="#event">Event</a>
-      </div>
-      <div class="nav-right">
-        <button id="open-auth" class="btn btn-primary login-btn">Login / Register</button>
-      </div>
-    </nav>
-  </header>
+    </header>
 
-  <!-- MAIN -->
-  <main>
+    <!-- Hero / Home -->
+    <section id="home" class="section section-hero">
+      <div class="container hero-inner">
+        <img class="hero-logo" src="assets/Tropical Island Handicraft Logo.png" alt="HCN Logo" />
+        <h1 class="hero-title">Welcome to HCN</h1>
+        <p class="hero-sub">Join our world. Build, fight, create.</p>
 
-    <!-- HOME (separated, must scroll) -->
-    <section id="home" class="section section-home">
-      <div class="home-inner container-narrow">
-        <!-- animated transparent PNG logo (place assets/logo.png) -->
-        <img src="assets/logo.png" class="brand-logo" alt="HANDY CRAFT NETWORK logo" />
+        <div class="hero-actions">
+          <!-- Copy IP -->
+          <button class="btn-glow" id="copyIpBtn" data-ip="play.hcnmc.net" title="Copy server IP">
+            Copy IP
+          </button>
 
-        <div class="home-card card">
-          <div class="home-info">
-            <div id="ip-box" class="ip-box">play.handycraftnetwork.fun</div>
-
-            <!-- Social card (exact structure + behavior you requested) -->
-            <div class="social-card card-social">
-              <span>Social</span>
-              <a class="social-link" href="#" title="YouTube">
-                <!-- Youtube icon (keeps your provided path style) -->
-                <svg viewBox="0 0 461 461" xmlns="http://www.w3.org/2000/svg" fill="#000000"><path d="M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728 c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137 C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607 c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z"/></svg>
-              </a>
-              <a class="social-link" href="#" title="Facebook">
-                <svg viewBox="0 0 512 512" fill="#000000"><path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"/></svg>
-              </a>
-              <a class="social-link" href="#" title="Instagram">
-                <svg viewBox="0 -28.5 256 256" fill="#000000"><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z"/></svg>
-              </a>
-              <a class="social-link" href="#" title="Other">
-                <svg viewBox="0 0 1024 1024" fill="#000000"><path d="M488.1 414.7V303.4L300.9 428l83.6 55.8zm254.1 137.7v-79.8l-59.8 39.9zM512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z"/></svg>
-              </a>
-            </div>
-
-          </div>
-
-          <div class="home-actions">
-            <button id="copy-ip" class="btn btn-primary btn-glow">Copy IP</button>
-            <a href="https://discord.gg/j73cN2MAmU" class="btn btn-primary btn-glow" target="_blank">Discord</a>
+          <!-- Your EXACT Social Button (moved to home) -->
+          <div class="card" id="socialCard" title="Our Socials">
+            <span>Social</span>
+            <a class="social-link" href="#" aria-label="YouTube">
+              <svg version="1.1" viewBox="0 0 461.001 461.001" xml:space="preserve">
+                <g><g>
+                  <path style="fill:#F61C0D;" d="M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728 c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137 C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607 c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z"></path>
+                </g></g>
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="Medium">
+              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z"></path></svg>
+            </a>
+            <a class="social-link" href="#" aria-label="Discord">
+              <svg viewBox="0 -28.5 256 256" xmlns="http://www.w3.org/2000/svg"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="#5865F2"></path></g></svg>
+            </a>
+            <a class="social-link" href="#" aria-label="Shield">
+              <svg viewBox="0 0 1024 1024" class="icon" xmlns="http://www.w3.org/2000/svg"><path d="M488.1 414.7V303.4L300.9 428l83.6 55.8zm254.1 137.7v-79.8l-59.8 39.9zM512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm278 533c0 1.1-.1 2.1-.2 3.1 0 .4-.1.7-.2 1a14.16 14.16 0 0 1-.8 3.2c-.2.6-.4 1.2-.6 1.7-.2.4-.4.8-.5 1.2-.3.5-.5 1.1-.8 1.6-.2.4-.4.7-.7 1.1-.3.5-.7 1-1 1.5-.3.4-.5.7-.8 1-.4.4-.8.9-1.2 1.3-.3.3-.6.6-1 .9-.4.4-.9.8-1.4 1.1-.4.3-.7.6-1.1.8-.1.1-.3.2-.4.3L525.2 786c-4 2.7-8.6 4-13.2 4-4.7 0-9.3-1.4-13.3-4L244.6 616.9c-.1-.1-.3-.2-.4-.3l-1.1-.8c-.5-.4-.9-.7-1.3-1.1-.3-.3-.6-.6-1-.9-.4-.4-.8-.8-1.2-1.3a7 7 0 0 1-.8-1c-.4-.5-.7-1-1-1.5-.2-.4-.5-.7-.7-1.1-.3-.5-.6-1.1-.8-1.6-.2-.4-.4-.8-.5-1.2-.2-.6-.4-1.2-.6-1.7-.1-.4-.3-.8-.4-1.2-.2-.7-.3-1.3-.4-2-.1-.3-.1-.7-.2-1-.1-1-.2-2.1-.2-3.1V427.9c0-1 .1-2.1.2-3.1.1-.3.1-.7.2-1a14.16 14.16 0 0 1 .8-3.2c.2-.6.4-1.2.6-1.7.2-.4.4-.8.5-1.2.2-.5.5-1.1.8-1.6.2-.4.4-.7.7-1.1.6-.9 1.2-1.7 1.8-2.5.4-.4.8-.9 1.2-1.3.3-.3.6-.6 1-.9.4-.4.9-.8 1.3-1.1.4-.3.7-.6 1.1-.8.1-.1.3-.2.4-.3L498.7 239c8-5.3 18.5-5.3 26.5 0l254.1 169.1c.1.1.3.2.4.3l1.1.8 1.4 1.1c.3.3.6.6 1 .9.4.4.8.8 1.2 1.3.7.8 1.3 1.6 1.8 2.5.2.4.5.7.7 1.1.3.5.6 1 .8 1.6.2.4.4.8.5 1.2.2.6.4 1.2.6 1.7.1.4.3.8.4 1.2.2.7.3 1.3.4 2 .1.3.1.7.2 1 .1 1 .2 2.1.2 3.1V597z"></path></svg>
+            </a>
           </div>
         </div>
+
+        <p class="hero-note">Scroll to explore each page ↓</p>
       </div>
     </section>
 
-    <!-- RANKS -->
-    <section id="ranks" class="section section-block">
-      <div class="container-narrow">
-        <h2 class="title">Ranks & Coin Shop</h2>
-        <div class="rank-toggle card">
-          <button class="btn btn-tab active" data-duration="3month">3 Month</button>
-          <button class="btn btn-tab" data-duration="permanent">Permanent</button>
+    <!-- About -->
+    <section id="about" class="section section-contrast">
+      <div class="container">
+        <h2 class="section-title">About HCN</h2>
+        <p class="section-text">
+          HCN is a modern Minecraft network focused on smooth gameplay and competitive fun.
+        </p>
+        <div class="grid-2">
+          <div class="panel">
+            <h3 class="panel-title">Why HCN?</h3>
+            <ul class="panel-list">
+              <li>Low-latency servers</li>
+              <li>Active staff</li>
+              <li>Balanced ranks & perks</li>
+              <li>Events & community</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3 class="panel-title">How to Join</h3>
+            <ol class="panel-list">
+              <li>Launch Minecraft</li>
+              <li>Add server: <strong>play.hcnmc.net</strong></li>
+              <li>Hop in and have fun</li>
+            </ol>
+          </div>
         </div>
-        <div id="rank-grid" class="rank-grid"></div>
       </div>
     </section>
 
-    <!-- LEADERBOARD -->
-    <section id="leaderboard" class="section section-block">
-      <div class="container-narrow">
-        <h2 class="title">Ranking</h2>
-        <div class="ranking-header">
-          <button class="btn btn-chip active" data-mode="overall">Overall</button>
-          <button class="btn btn-chip" data-mode="weekly">Weekly</button>
-          <button class="btn btn-chip" data-mode="monthly">Monthly</button>
+    <!-- Gallery / Big Spacer to force separated pages feel -->
+    <section id="gallery" class="section">
+      <div class="container">
+        <h2 class="section-title">Gallery</h2>
+        <div class="gallery">
+          <div class="gallery-item"></div>
+          <div class="gallery-item"></div>
+          <div class="gallery-item"></div>
         </div>
-        <div id="leaderboard-wrap" class="leaderboard-wrap"></div>
       </div>
     </section>
 
-    <!-- STAFF -->
-    <section id="staff" class="section section-block">
-      <div class="container-narrow">
-        <h2 class="title">Admin / Staff Info</h2>
-        <div id="admin-grid" class="admin-grid"></div>
+    <!-- Contact / Footer -->
+    <section id="contact" class="section section-contrast">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-text">Got questions? Reach us on socials via the Social button above.</p>
+        <div class="footer-buttons">
+          <button class="btn-glow">Email Us</button>
+          <button class="btn-glow">Support</button>
+        </div>
       </div>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>© <span id="year"></span> HCN Network. All rights reserved.</p>
+        </div>
+      </footer>
     </section>
 
-    <!-- EVENT -->
-    <section id="event" class="section section-block">
-      <div class="container-narrow">
-        <h2 class="title">Server Events</h2>
-        <div id="event-timer" class="timer">Loading timer...</div>
-      </div>
-    </section>
+  </div><!-- /#app -->
 
-  </main>
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <button class="modal-close btn-glow" data-close aria-label="Close">×</button>
 
-  <!-- AUTH MODAL (login/register) -->
-  <div id="auth-modal" class="modal" aria-hidden="true">
-    <div class="modal-content card">
-      <button id="auth-close" class="modal-close" aria-label="Close">&times;</button>
-      <form id="auth-form" class="form">
-        <p id="heading">Login / Register</p>
+      <!-- Your exact login form styles applied via CSS; structure adapted for accessibility -->
+      <form class="form" id="loginForm" autocomplete="off">
+        <p id="heading">Login</p>
 
         <div class="field">
-          <!-- input icon -->
-          <svg class="input-icon" viewBox="0 0 16 16"><path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643z"/></svg>
-          <input id="auth-username" class="input-field" autocomplete="off" placeholder="Username or email" type="text" />
+          <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z"></path>
+          </svg>
+          <input id="username" name="username" placeholder="Username" class="input-field" type="text" required />
         </div>
 
         <div class="field">
-          <svg class="input-icon" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
-          <input id="auth-password" class="input-field" placeholder="Password" type="password" />
+          <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+          </svg>
+          <input id="password" name="password" placeholder="Password" class="input-field" type="password" required />
         </div>
 
-        <div class="btn-row">
-          <button id="btn-login" class="button primary">Login</button>
-          <button id="btn-register" class="button secondary">Sign Up</button>
+        <div class="btn">
+          <button type="submit" class="button1 btn-glow">Login</button>
+          <button type="button" class="button2 btn-glow" id="signupBtn">Sign Up</button>
         </div>
-
-        <button id="btn-forgot" class="button ghost">Forgot Password</button>
-        <div class="hr"></div>
-        <button id="btn-google" class="button google">Continue with Gmail</button>
+        <button type="button" class="button3" id="forgotBtn">Forgot Password</button>
       </form>
     </div>
   </div>
 
-  <!-- PROFILE PANEL (appear after login) -->
-  <aside id="profile-panel" class="profile-panel hidden">
-    <img id="profile-avatar" class="profile-avatar" src="assets/myskin.png" alt="Avatar" />
-    <div id="profile-name" class="profile-name">Guest</div>
-    <div id="profile-credits" class="profile-credits">Credits: 0</div>
-    <button id="profile-logout" class="btn btn-primary small">Logout</button>
-  </aside>
-
   <script src="script.js"></script>
 </body>
 </html>
+
